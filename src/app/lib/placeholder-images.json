@@ -1,0 +1,23 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "A modern workspace with a laptop and calculator, representing financial planning and tax refunds.",
+      "imageUrl": "https://picsum.photos/seed/refund1/1200/800",
+      "imageHint": "tax refund office"
+    },
+    {
+      "id": "calculator-feature",
+      "description": "Abstract digital representation of financial calculations.",
+      "imageUrl": "https://picsum.photos/seed/calc2/600/400",
+      "imageHint": "financial calculation"
+    },
+    {
+      "id": "document-upload",
+      "description": "Secure document storage icon or visual.",
+      "imageUrl": "https://picsum.photos/seed/doc3/600/400",
+      "imageHint": "secure documents"
+    }
+  ]
+}

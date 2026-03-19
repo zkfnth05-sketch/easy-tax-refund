@@ -1,0 +1,12 @@
+{
+  "totalFilesChecked": 77,
+  "totalUniqueKeysExtractedFromCode": 416,
+  "totalUniqueKeysInKoTs": 413,
+  "totalDuplicatesInKoTs": 0,
+  "missingKeysCount": 3,
+  "missingKeys": [
+    "2d",
+    "card",
+    "bank"
+  ]
+}
