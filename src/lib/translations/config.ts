@@ -23,3 +23,4 @@ export const languages: { code: Language; name: string; countryCode: string }[] 
   { code: 'kk', name: 'Қазақша', countryCode: 'kz' },
   { code: 'ur', name: 'اردو', countryCode: 'pk' },
 ];
+

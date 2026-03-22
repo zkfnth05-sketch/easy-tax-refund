@@ -27,11 +27,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const fetchTranslations = useCallback(async (lang: Language) => {
-    if (lang === 'ko') {
-      setTranslationMap({});
-      return true;
-    }
-
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
@@ -90,16 +85,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const t = React.useCallback((key: string, variables?: Record<string, string | number>): string => {
     if (!key || typeof key !== 'string') return '';
     const trimmedKey = key.trim();
-    let text = language === 'ko' ? key : (translationMap[trimmedKey] || key);
+    let text = translationMap[trimmedKey] || key;
     
     if (variables) {
       Object.entries(variables).forEach(([k, v]) => {
-        text = text.replace(`{${k}}`, String(v));
+        text = String(text).replace(`{${k}}`, String(v));
       });
     }
     
     return text;
-  }, [language, translationMap]);
+  }, [translationMap]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t, isReady }}>

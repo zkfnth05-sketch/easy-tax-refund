@@ -24,34 +24,67 @@ const NameOptimizationOutputSchema = z.object({
 export type NameOptimizationOutput = z.infer<typeof NameOptimizationOutputSchema>;
 
 export async function optimizeName(input: NameOptimizationInput): Promise<NameOptimizationOutput> {
-  return nameOptimizationFlow(input);
-}
+  const original = input.name.trim().toUpperCase();
+  if (!original) return { combinations: [], recommendation: "" };
 
-const nameOptimizationPrompt = ai.definePrompt({
-  name: 'nameOptimizationPrompt',
-  input: {schema: NameOptimizationInputSchema},
-  output: {schema: NameOptimizationOutputSchema},
-  prompt: `당신은 한국의 본인 인증 시스템(KCB, NICE 등) 전문가입니다.
-외국인 사용자가 입력한 이름 '{{{name}}}'을 기반으로, 한국 통신사나 외국인 등록증에 등록되어 있을 법한 성명 조합을 생성하십시오.
+  const hasSpace = original.includes(' ');
+  const noSpace = original.replace(/\s+/g, '');
+  
+  const combinations = [];
+  
+  // 1. ORIGINAL
+  combinations.push({
+    name: original,
+    label: "신분증 이름과 동일"
+  });
 
-반드시 다음 3가지 조합을 포함하십시오:
-1. 원본: 입력된 이름 그대로 (대문자 변환). Label: "신분증 이름과 동일"
-2. 순서 변경: 성과 이름의 순서를 바꾼 형태 (예: JOHN DOE -> DOE JOHN). Label: "성과 이름 순서 반대"
-3. 공백 제거: 모든 공백을 제거한 형태 (예: JOHN DOE -> JOHNDOE). Label: "띄어쓰기 없이 입력"
+  if (hasSpace) {
+    // 2. REVERSED (swap first and last groups)
+    const words = original.split(/\s+/);
+    if (words.length >= 2) {
+      const first = words[0];
+      const rest = words.slice(1).join(' ');
+      combinations.push({
+         name: `${rest} ${first}`,
+         label: "이름과 성 순서 반대"
+      });
+    }
 
-결과는 반드시 영문 대문자로 변환하여 응답하십시오.
-가장 가능성이 높은 한국식 등록 형식을 'recommendation'에 담고, 전체 목록을 'combinations'에 담으십시오.`,
-});
-
-const nameOptimizationFlow = ai.defineFlow(
-  {
-    name: 'nameOptimizationFlow',
-    inputSchema: NameOptimizationInputSchema,
-    outputSchema: NameOptimizationOutputSchema,
-  },
-  async input => {
-    const {output} = await nameOptimizationPrompt(input);
-    if (!output) throw new Error('성명 최적화에 실패했습니다.');
-    return output;
+    // 3. NO SPACE
+    combinations.push({
+      name: noSpace,
+      label: "띄어쓰기 없이 입력 (원본 순서)"
+    });
+    
+    // 4. LASTFIRST NO SPACE
+    if (words.length >= 2) {
+      const first = words[0];
+      const rest = words.slice(1).join('');
+      const reversedNoSpace = `${rest}${first}`;
+      if (reversedNoSpace !== noSpace) {
+         combinations.push({
+            name: reversedNoSpace,
+            label: "순서 반대 및 띄어쓰기 생략"
+         });
+      }
+    }
   }
-);
+
+  // Deduplicate combinations ensuring uniqueness
+  const uniqueNames = new Set();
+  const filteredCombinations = [];
+  for (const combo of combinations) {
+    if (!uniqueNames.has(combo.name)) {
+      uniqueNames.add(combo.name);
+      filteredCombinations.push(combo);
+    }
+  }
+
+  // 1초 인위적인 딜레이(UI의 부드러운 전환을 위해 원한다면 추가, 근데 여기선 필요없음)
+  // await new Promise(resolve => setTimeout(resolve, 300)); 
+
+  return {
+    combinations: filteredCombinations,
+    recommendation: original
+  };
+}

@@ -679,110 +679,88 @@ function AdminDashboardContent({ isAdmin }: { isAdmin: boolean }) {
                 <TableHead className="font-bold pl-8 py-5">신청번호 / 고객</TableHead>
                 <TableHead className="font-bold">예상 환급액</TableHead>
                 <TableHead className="font-bold">진행 단계</TableHead>
-                <TableHead className="font-bold text-center">입금 확인</TableHead>
+                <TableHead className="font-bold">사전 진단액</TableHead>
                 <TableHead className="font-bold text-indigo-600">리포트</TableHead>
-                <TableHead className="font-bold text-emerald-600">문서</TableHead>
+                <TableHead className="font-bold text-emerald-600">문서 / 연락처</TableHead>
                 <TableHead className="font-bold pr-8 text-right">상태 제어</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {paginatedApps?.map((app) => {
-                const statusBadge = getStatusBadge(app.status);
-                const user = users?.find(u => u.id === app.clientId);
-                return (
-                  <TableRow key={app.id} className="hover:bg-slate-50 border-b border-slate-50 transition-colors">
-                    <TableCell 
-                      className="pl-8 py-5 cursor-pointer hover:bg-slate-100/50 transition-all group"
-                      onClick={() => openAppDetail(app)}
-                    >
-                      <div className="font-black text-slate-900 group-hover:text-primary flex items-center gap-2 transition-colors">
-                        {app.id.substring(0, 8)}...
-                        <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0" />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="text-xs text-slate-400 font-bold">{app.fullName || "이름 없음"}</div>
-                        {app.userLanguage && (
-                          <Badge variant="outline" className="text-[9px] px-1 h-4 border-slate-200 text-slate-400 font-bold bg-slate-50 uppercase">
-                            {app.userLanguage}
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-black">₩ {app.estimatedRefundAmount?.toLocaleString()}</TableCell>
-                    <TableCell><Badge className={`rounded-lg font-bold ${statusBadge.class}`}>{statusBadge.label}</Badge></TableCell>
-                    <TableCell className="text-center">
-                      <Button
-                        variant={app.paymentStatus === 'paid' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => handlePaymentToggle(app)}
-                        className={`rounded-xl font-bold ${app.paymentStatus === 'paid' ? 'bg-green-500 hover:bg-green-600 text-white border-none' : 'text-slate-500 border-slate-200'}`}
-                      >
-                        {app. paymentStatus === 'paid' ? '결제 완료' : '미확인'}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm" className="rounded-xl font-black text-indigo-600 bg-indigo-50 border-indigo-100" onClick={() => { setReportApp(app); setIsTaxReportOpen(true); }}>
-                        <FileSearch className="h-4 w-4 mr-2" /> 자료
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm" className="rounded-xl font-black text-emerald-600 bg-emerald-50 border-emerald-100" onClick={async () => {
-                        setIsDocsLoading(true);
-                        try {
-                          setIsDocsViewerOpen(true);
-                        } finally { setIsDocsLoading(false); }
-                      }}>
-                        <Files className="h-4 w-4 mr-2" /> 확인
-                      </Button>
-                    </TableCell>
-                    <TableCell className="pr-8 text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="rounded-xl text-amber-500 hover:bg-amber-50"
-                          onClick={() => {
-                            setNoteAppId(app.id);
-                            setIsNoteDrawerOpen(true);
-                          }}
-                        >
-                          <BellRing className="h-4 w-4 mr-1" /> 알림
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="rounded-xl text-indigo-500 hover:bg-indigo-50 relative group"
-                          onClick={async () => {
-                            setChatAppId(app.id);
-                            setIsChatOpen(true);
-                            // 관리자 카운트 초기화
-                            if (app.unreadChatCountAdmin > 0) {
-                              await updateDoc(doc(db, 'applications', app.id), {
-                                unreadChatCountAdmin: 0
-                              });
-                            }
-                          }}
-                        >
-                          <MessageSquare className={cn("h-4 w-4 mr-1", app.unreadChatCountAdmin > 0 && "animate-bounce")} />
-                          상담
-                          {app.unreadChatCountAdmin > 0 && (
-                            <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-black text-white animate-pulse">
-                              {app.unreadChatCountAdmin > 9 ? '9+' : app.unreadChatCountAdmin}
-                            </span>
-                          )}
-                        </Button>
-                        <Button variant="ghost" size="sm" className="rounded-xl font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100" onClick={() => handleStatusChange(app, -1)}>
-                          <ChevronLeft className="h-4 w-4 mr-1" /> 이전
-                        </Button>
-                        <Button variant="outline" size="sm" className="rounded-xl font-black" onClick={() => handleStatusChange(app, 1)}>
-                          다음 단계 <ChevronRight className="h-4 w-4 ml-1" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
+                      <TableBody>
+                        {paginatedApps?.map((app) => {
+                          const statusBadge = getStatusBadge(app.status);
+                          return (
+                            <TableRow key={app.id} className="hover:bg-slate-50 border-b border-slate-50 transition-colors">
+                              <TableCell 
+                                className="pl-8 py-5 cursor-pointer hover:bg-slate-100/50 transition-all group"
+                                onClick={() => openAppDetail(app)}
+                              >
+                                <div className="font-black text-slate-900 group-hover:text-primary flex items-center gap-2 transition-colors">
+                                  {app.id.substring(0, 8)}...
+                                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0" />
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <div className="text-xs text-slate-400 font-bold">{app.fullName || "이름 없음"}</div>
+                                  {app.userLanguage && (
+                                    <Badge variant="outline" className="text-[9px] px-1 h-4 border-slate-200 text-slate-400 font-bold bg-slate-50 uppercase">
+                                      {app.userLanguage}
+                                    </Badge>
+                                  )}
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-black">₩ {app.estimatedRefundAmount?.toLocaleString()}</TableCell>
+                              <TableCell><Badge className={`rounded-lg font-bold ${statusBadge.class}`}>{statusBadge.label}</Badge></TableCell>
+                              <TableCell>
+                                <div className="font-bold text-slate-900">₩ {(app.preFilterEstimate || 0).toLocaleString()}</div>
+                              </TableCell>
+                              <TableCell>
+                                <Button variant="outline" size="sm" className="rounded-xl font-black text-indigo-600 bg-indigo-50 border-indigo-100" onClick={() => { setReportApp(app); setIsTaxReportOpen(true); }}>
+                                  <FileSearch className="h-4 w-4 mr-2" /> 자료
+                                </Button>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex flex-col gap-1">
+                                  <div className="text-[11px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">
+                                     {app.phoneNo || app.phone || "No Phone"}
+                                  </div>
+                                  <Button variant="outline" size="sm" className="h-7 w-fit rounded-lg font-black text-[10px] text-emerald-600 bg-emerald-50 border-emerald-100" onClick={async () => {
+                                    setIsDocsLoading(true);
+                                    try { setIsDocsViewerOpen(true); } finally { setIsDocsLoading(false); }
+                                  }}>
+                                    현장 서류
+                                  </Button>
+                                </div>
+                              </TableCell>
+                              <TableCell className="pr-8 text-right">
+                                <div className="flex justify-end gap-2">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="rounded-xl text-indigo-500 hover:bg-indigo-50 relative group"
+                                    onClick={async () => {
+                                      setChatAppId(app.id);
+                                      setIsChatOpen(true);
+                                      if (app.unreadChatCountAdmin > 0) {
+                                        await updateDoc(doc(db, 'applications', app.id), { unreadChatCountAdmin: 0 });
+                                      }
+                                    }}
+                                  >
+                                    <MessageSquare className={cn("h-4 w-4 mr-1", app.unreadChatCountAdmin > 0 && "animate-bounce")} />
+                                    상담
+                                    {app.unreadChatCountAdmin > 0 && (
+                                      <span className="absolute -top-2 -right-2 h-8 w-8 bg-red-500 text-white rounded-full border-2 border-white flex items-center justify-center text-[11px] font-black animate-bounce shadow-lg z-10">
+                                        {app.unreadChatCountAdmin > 9 ? '9+' : app.unreadChatCountAdmin}
+                                      </span>
+                                    )}
+                                  </Button>
+                                  <Button variant="outline" size="sm" className="rounded-xl font-black" onClick={() => handleStatusChange(app, 1)}>
+                                    단계 제어 <ChevronRight className="h-4 w-4 ml-1" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
           </Table>
           
           {/* Pagination Controls */}
@@ -1191,6 +1169,101 @@ function AdminDashboardContent({ isAdmin }: { isAdmin: boolean }) {
           </div>
         </DialogContent>
       </Dialog>
+      {/* VIP Priority Monitoring Section */}
+      <div className="pt-20 border-t-2 border-slate-100 pb-20">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-14 w-14 bg-amber-400 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-200">
+             <Trophy className="h-8 w-8 text-amber-950" />
+          </div>
+          <div>
+            <h2 className="text-4xl font-black text-slate-900 font-headline tracking-tight">🔥 VIP 실시간 우선 모니터링 (집중 관리)</h2>
+            <p className="text-slate-500 font-bold text-lg">잠재 환급액 40만 원 이상의 고액 대상자 우선 순위 리스트입니다.</p>
+          </div>
+        </div>
+
+        <Card className="premium-card rounded-[2.5rem] border-4 border-amber-400 shadow-2xl overflow-hidden bg-white">
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader className="bg-amber-400/10">
+                <TableRow className="hover:bg-amber-400/5 transition-colors border-b border-amber-400/20">
+                  <TableHead className="font-black text-amber-950 pl-8 py-6">VIP 고객 정보</TableHead>
+                  <TableHead className="font-black text-amber-950">잠재 환급액</TableHead>
+                  <TableHead className="font-black text-amber-950">현재 단계</TableHead>
+                  <TableHead className="font-black text-amber-950">연락처</TableHead>
+                  <TableHead className="font-black text-amber-950 pr-8 text-right">실시간 우선 상담</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                 {apps.filter(app => (app.preFilterEstimate || 0) >= 400000).slice(0, 50).map((app) => {
+                   const statusBadge = getStatusBadge(app.status);
+                   return (
+                     <TableRow key={app.id} className="hover:bg-amber-400/5 transition-colors border-b border-amber-400/10">
+                        <TableCell className="pl-8 py-6 cursor-pointer" onClick={() => openAppDetail(app)}>
+                          <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 bg-amber-400 text-amber-950 rounded-xl flex items-center justify-center font-black shadow-sm shrink-0">VIP</div>
+                            <div>
+                               <div className="font-black text-slate-900 text-lg leading-none mb-1">{app.fullName || "이름 없음"}</div>
+                               <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">ID: {app.id.substring(0, 8)}</div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="text-2xl font-black text-amber-600 tracking-tighter">₩ {(app.preFilterEstimate || 0).toLocaleString()}</div>
+                        </TableCell>
+                        <TableCell>
+                           <Badge className={`rounded-xl px-3 font-black ${statusBadge.class} border-none shadow-sm`}>{statusBadge.label}</Badge>
+                        </TableCell>
+                        <TableCell>
+                           <div className="font-black text-slate-700 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 inline-block text-sm">
+                             {app.phoneNo || app.phone || "No Phone"}
+                           </div>
+                        </TableCell>
+                        <TableCell className="pr-8 text-right">
+                          <div className="flex justify-end items-center gap-4">
+                            <Button
+                              variant="ghost"
+                              size="lg"
+                              className="rounded-2xl text-amber-600 hover:bg-amber-50 h-16 w-16"
+                              onClick={() => {
+                                setNoteAppId(app.id);
+                                setIsNoteDrawerOpen(true);
+                              }}
+                            >
+                              <BellRing className="h-7 w-7" />
+                            </Button>
+                            <Button 
+                              className="rounded-2xl h-16 px-8 bg-amber-400 text-amber-950 font-black shadow-lg shadow-amber-200 hover:bg-amber-500 scale-100 hover:scale-105 transition-all relative overflow-hidden group"
+                              onClick={async () => {
+                                setChatAppId(app.id);
+                                setIsChatOpen(true);
+                                if (app.unreadChatCountAdmin > 0) {
+                                  await updateDoc(doc(db, 'applications', app.id), { unreadChatCountAdmin: 0 });
+                                }
+                              }}
+                            >
+                               <MessageSquare className="h-6 w-6 mr-3 animate-bounce" />
+                               VIP 우선 상담 시작하기
+                               {app.unreadChatCountAdmin > 0 && (
+                                  <span className="absolute -top-3 -right-3 h-[42px] w-[42px] bg-red-600 text-white rounded-full border-4 border-white flex items-center justify-center text-sm font-black shadow-2xl animate-bounce z-10 transition-all">
+                                    {app.unreadChatCountAdmin > 99 ? '99+' : app.unreadChatCountAdmin}
+                                  </span>
+                               )}
+                            </Button>
+                          </div>
+                        </TableCell>
+                     </TableRow>
+                   );
+                 })}
+              </TableBody>
+            </Table>
+            {apps.filter(app => (app.preFilterEstimate || 0) >= 400000).length === 0 && (
+              <div className="py-32 text-center bg-slate-50/50">
+                <p className="text-2xl font-black text-slate-300">현재 집중 모니터링 대상인 VIP가 없습니다.</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

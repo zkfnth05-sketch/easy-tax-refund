@@ -16,6 +16,7 @@ import {
   SheetTitle, 
   SheetTrigger 
 } from "@/components/ui/sheet";
+import Image from "next/image";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -49,10 +50,18 @@ export function Navbar() {
     )}>
       <div className="container mx-auto flex items-center justify-between px-6 lg:px-12">
         <Link href="/" className="flex items-center gap-3 sm:gap-4 group">
-          <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-[1.25rem] bg-gradient-to-br from-primary via-primary/90 to-indigo-700 text-white shadow-[0_10px_25px_-5px_rgba(99,102,241,0.4)] transition-all duration-300 group-hover:scale-110 active:scale-95 shrink-0">
-            <Globe className="h-6 w-6 sm:h-7 sm:w-7" />
+          <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 transition-transform duration-300 group-hover:scale-110 active:scale-95">
+            <Image 
+              src="/sophisticated_gradient_globe_icon_1774153957587.png" 
+              alt="Easy Tax Refund Premium Logo" 
+              fill
+              className="object-contain mix-blend-multiply"
+            />
           </div>
-          <span className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tighter text-slate-900 font-headline truncate max-w-[150px] sm:max-w-none">Easy Tax Refund</span>
+          <span className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tighter text-slate-900 font-headline leading-[0.9] sm:leading-normal flex flex-col sm:flex-row sm:gap-2">
+            <span>Easy</span>
+            <span className="text-primary sm:text-slate-900">Tax Refund</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -64,8 +73,11 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-6">
-          <Button variant="ghost" asChild size="icon" className="rounded-xl hover:bg-slate-100">
-            <Link href="/welcome" title="Change Language"><RotateCcw className="h-5 w-5 text-slate-400" /></Link>
+          <Button variant="ghost" asChild className="rounded-xl hover:bg-slate-100 flex items-center gap-1 sm:gap-2 px-2 sm:px-3">
+            <Link href="/welcome" title={t('언어 선택')}>
+              <Globe className="h-5 w-5 text-slate-400 shrink-0" />
+              <span className="text-[12px] sm:text-[14px] font-bold text-slate-600 truncate max-w-[70px] xs:max-w-none">{t('언어 선택')}</span>
+            </Link>
           </Button>
           {!isUserLoading && (
             user ? (
@@ -104,12 +116,16 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                {user && (
-                   <Link href="/portal" className="flex items-center gap-4 text-xl font-bold text-slate-600 hover:text-primary transition-colors">
-                     <div className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center"><User className="h-4 w-4" /></div>
-                     {t('나의 환급 진행사항')}
-                   </Link>
-                )}
+                 {user && (
+                    <Link href="/portal" className="flex items-center gap-4 text-xl font-bold text-slate-600 hover:text-primary transition-colors">
+                      <div className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center"><User className="h-4 w-4" /></div>
+                      {t('나의 환급 진행사항')}
+                    </Link>
+                 )}
+                 <Link href="/welcome" className="flex items-center gap-4 text-xl font-bold text-slate-600 hover:text-primary transition-colors">
+                   <div className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center"><Globe className="h-5 w-5" /></div>
+                   {t('언어 선택')}
+                 </Link>
                 <div className="h-px bg-slate-100 my-4" />
                 <Link href="/login" className="text-xl font-bold text-slate-900">{t('로그인 / 신청 현황')}</Link>
                 <Button asChild className="w-full bg-primary h-16 rounded-2xl font-black text-xl mt-4">

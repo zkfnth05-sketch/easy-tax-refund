@@ -26,6 +26,8 @@ import {
   Coins,
   Trophy,
   Globe,
+  Database,
+  Shield,
   X,
   Minimize2
 } from "lucide-react";
@@ -245,9 +247,9 @@ export default function HomePage() {
         </section>
 
         {/* 디자인 섹션 2: 신뢰 지표 */}
-        <section className="py-12 bg-white border-y border-slate-50">
+        <section className="py-12 bg-white border-b border-slate-50 overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-12 lg:gap-24 opacity-40 grayscale">
+            <div className="flex flex-wrap justify-center gap-12 lg:gap-24 opacity-80 text-slate-400">
               <div className="flex items-center gap-3 font-black text-2xl tracking-tighter">{t('청년 외국인 세무 지원')}</div>
               <div className="flex items-center gap-3 font-black text-2xl tracking-tighter">{t('CERTIFIED TAX SERVICE')}</div>
               <div className="flex items-center gap-3 font-black text-2xl tracking-tighter">{t('FINANCIAL SECURITY')}</div>
@@ -255,7 +257,48 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 디자인 섹션 3: 문제 제기 */}
+        {/* 디자인 섹션 3: 정부 공인 상세 안내 */}
+        <section className="py-20 bg-slate-50/50 relative overflow-hidden">
+          <div className="absolute inset-0 bg-primary/[0.02] pointer-events-none" />
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16 text-center md:text-left p-10 bg-white rounded-[3rem] shadow-xl border border-slate-100/50">
+              <div className="shrink-0 relative group">
+                <div className="absolute -inset-4 bg-primary/10 rounded-[2.5rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Image 
+                  src="/official_nts_carrier_badge_v2_1774141326494.png"
+                  alt="Official NTS & Carrier Badge" 
+                  width={180}
+                  height={180}
+                  className="relative rounded-3xl shadow-xl border border-slate-50 transition-transform group-hover:scale-105"
+                />
+              </div>
+              <div className="space-y-5">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-600">
+                  <ShieldCheck className="h-5 w-5" />
+                  <span className="text-xs font-black uppercase tracking-widest leading-none">{t('safe_and_secure')}</span>
+                </div>
+                <h2 className="text-2xl md:text-4xl font-black text-slate-900 leading-tight">
+                  {t('nts_trust_title')}
+                </h2>
+                <p className="text-lg md:text-xl text-slate-500 font-bold leading-relaxed max-w-2xl">
+                  {t('nts_trust_message')}
+                </p>
+                <div className="flex flex-wrap justify-center md:justify-start gap-8 pt-2">
+                  <div className="flex items-center gap-2.5 text-sm font-black text-slate-400">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    {t('nts_hometax')}
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm font-black text-slate-400">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    {t('SKT / KT / LGU+')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 디자인 섹션 5: 문제 제기 */}
         <section className="py-32 bg-white overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-20 items-center max-w-7xl mx-auto">
@@ -337,7 +380,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 디자인 섹션 5: CTA */}
+        {/* 디자인 섹션 7: CTA */}
         <section className="py-32 bg-white relative">
           <div className="container mx-auto px-6 max-w-5xl text-center space-y-12">
             <h2 className="text-4xl lg:text-7xl font-black font-headline text-slate-900 text-gradient break-keep">
@@ -354,7 +397,72 @@ export default function HomePage() {
                 <div className="hidden sm:block h-4 w-px bg-slate-200" />
                 <div className="flex items-center gap-2 text-slate-900 font-black"><RotateCcw className="h-6 w-6 text-primary" />{t('Zero Risk')}</div>
               </div>
-              <p className="text-slate-400 font-bold max-w-lg">{t('우리는 단순히 계산기만 돌리는 앱이 아닙니다. 전문적인 서비스, 리스크는 제로. 환급 거절 시 선임료를 100% 환불해 드립니다.')}</p>
+              <p className="text-slate-400 font-bold max-lg">{t('우리는 단순히 계산기만 돌리는 앱이 아닙니다. 전문적인 서비스, 리스크는 제로. 환급 거절 시 선임료를 100% 환불해 드립니다.')}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 디자인 섹션 8: 보안 안심 보증서 */}
+        <section className="py-24 bg-white overflow-hidden">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="bg-slate-50 rounded-[4rem] p-10 md:p-20 relative overflow-hidden border border-slate-100 group">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-[100px] group-hover:bg-primary/10 transition-colors duration-1000" />
+                
+                <div className="relative flex flex-col lg:flex-row items-center gap-16">
+                  <div className="shrink-0 relative">
+                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-[40px] animate-pulse" />
+                    <Image 
+                      src="/certified_security_seal_premium_1774150786685.png" 
+                      alt="Certified Security" 
+                      width={220} 
+                      height={220} 
+                      className="relative transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  
+                  <div className="flex-1 space-y-10 text-center lg:text-left">
+                    <div className="space-y-4">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-primary/10 shadow-sm">
+                        <Badge variant="outline" className="border-none bg-primary p-1 rounded-full"><Lock className="h-3 w-3 text-white" /></Badge>
+                        <span className="text-sm font-black text-primary tracking-widest leading-none">{t('security_certified')}</span>
+                      </div>
+                      <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight break-keep">
+                        {t('security_card_title')}
+                      </h2>
+                      <p className="text-xl text-slate-500 font-bold max-xl mx-auto lg:mx-0 leading-relaxed">
+                        {t('security_card_subtitle')}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      <div className="space-y-3 p-6 bg-white rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1">
+                        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                          <Lock className="h-6 w-6 text-primary" />
+                        </div>
+                        <h4 className="font-black text-slate-800">{t('security_item_encryption_title')}</h4>
+                        <p className="text-sm font-bold text-slate-400 leading-relaxed">{t('security_item_encryption_desc')}</p>
+                      </div>
+                      
+                      <div className="space-y-3 p-6 bg-white rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1">
+                        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                          <Database className="h-6 w-6 text-primary" />
+                        </div>
+                        <h4 className="font-black text-slate-800">{t('security_item_no_storage_title')}</h4>
+                        <p className="text-sm font-bold text-slate-400 leading-relaxed">{t('security_item_no_storage_desc')}</p>
+                      </div>
+
+                      <div className="space-y-3 p-6 bg-white rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1">
+                        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                          <Shield className="h-6 w-6 text-primary" />
+                        </div>
+                        <h4 className="font-black text-slate-800">{t('security_item_pippa_title')}</h4>
+                        <p className="text-sm font-bold text-slate-400 leading-relaxed">{t('security_item_pippa_desc')}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -397,6 +505,102 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* 사회적 증거(Social Proof) 리뷰 섹션 */}
+        <section className="py-20 bg-slate-50/50 overflow-hidden border-t border-slate-100">
+          <div className="container mx-auto px-4 mb-12 text-center">
+            <Badge variant="outline" className="mb-4 py-1 px-4 border-primary/20 text-primary bg-primary/5 rounded-full font-bold">
+              {t('함께하는 동료들의 리얼 후기')}
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-black text-slate-900">
+              {t('이미 많은 외국인 동료들이 권리를 찾았습니다')}
+            </h2>
+          </div>
+          
+          <div className="relative flex gap-8 py-4">
+            <div className="flex gap-8 animate-marquee whitespace-nowrap">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex gap-8">
+                  {[
+                    { 
+                      name: "Nguyen", country: "Vietnam", flag: "🇻🇳", amount: "3,100,000", 
+                      text: "맨 처음에는 한국어를 몰라서 인증앱을 어떻게 깔아야 하나 걱정부터 앞섰어요. 그런데 이지텍스리펀드의 자세한 안내를 하나하나 따라하다 보니 인증에 성공했구요. 결과는 대박! 제가 받을 수 있는 금액이 310만원이나 되더라구요. 신청 후 2달 뒤에 어김없이 국세청에서 입금되었습니다. 여러분 두려워 마세요!" 
+                    },
+                    { 
+                      name: "Chen", country: "China", flag: "🇨🇳", amount: "2,250,000", 
+                      text: "솔직히 처음엔 사기인 줄 알고 의심했어요. 하지만 국세청 공식 데이터를 안전하게 가져온다는 설명을 보고 용기를 냈죠. PASS 앱 인증이 조금 복잡했지만 그림 가이드 덕분에 성공했고, 정확히 8주 뒤에 225만원이 통장으로 들어왔습니다. 정말 믿을 수 있는 서비스예요." 
+                    },
+                    { 
+                      name: "Hassan", country: "Uzbekistan", flag: "🇺🇿", amount: "1,850,000", 
+                      text: "이름 대소문자랑 띄어쓰기 때문에 항상 실패했는데, 여기서 알려준 대로 하니까 바로 통과됐어요! 한국어가 서툴러도 그림만 보면 누구나 할 수 있습니다. 185만원이라는 큰 돈이 생겨서 너무 행복합니다. 우즈벡 친구들에게도 다 추천하고 있어요." 
+                    },
+                    { 
+                      name: "Maria", country: "Philippines", flag: "🇵🇭", amount: "2,780,000", 
+                      text: "인증앱 설치가 외국인에겐 제일 큰 장벽인데, 이 앱은 그걸 아주 쉽게 풀어서 알려줍니다. 보안도 확실해서 개인정보 유출 걱정도 없었어요. 한 달 반 만에 278만원 환급받았습니다. 포기하지 마시고 꼭 도전해 보세요!" 
+                    },
+                    { 
+                      name: "Aris", country: "Indonesia", flag: "🇮🇩", amount: "1,420,000", 
+                      text: "처음엔 내 정보를 넣는 게 무서웠어요. 하지만 암호화 기술과 무저장 원칙을 보고 신뢰가 생겼습니다. 인증 성공하고 조회해보니 142만원이나 있었네요! 실제로 돈이 입금되는 걸 확인하니 정말 감격스러웠습니다. 이지텍스리펀드 팀 감사합니다." 
+                    },
+                    { 
+                      name: "Sita", country: "Nepal", flag: "🇳🇵", amount: "3,000,000", 
+                      text: "네팔 친구들은 세금을 돌려받을 수 있다는 사실조차 몰랐어요. 저도 긴가민가하면서 시작했는데 300만원 행운을 얻었습니다! 인증 과정이 조금 힘들 수 있지만 자세히 설명된 대로만 하면 저 같은 외국인도 충분히 성공할 수 있어요." 
+                    },
+                    { 
+                      name: "Bat", country: "Mongolia", flag: "🇲🇳", amount: "950,000", 
+                      text: "통신사 인증이 항상 문제였는데, 여기서 알려준 팁 덕분에 드디어 해결했습니다. 소액이라고 생각했는데 95만원이나 들어오니 기분 최고네요! 외국인을 위한 이런 서비스가 있어서 정말 다행입니다. 여러분도 본인의 권리를 찾으세요." 
+                    },
+                    { 
+                      name: "Somchai", country: "Thailand", flag: "🇹🇭", amount: "2,120,000", 
+                      text: "신청하고 나서 정말 돈이 들어올까 매일 확인했어요. 정확히 약속한 날짜에 국세청에서 입금 알림이 왔을 때 소리를 질렀습니다! 212만원 환급 성공! 인증앱 때문에 포기하지 마세요. 차근차근 따라하다 보면 행운이 올 거예요." 
+                    },
+                    { 
+                      name: "Vlad", country: "Russia", flag: "🇷🇺", amount: "1,680,000", 
+                      text: "보안이 제일 중요했는데 이 앱은 보안 보증서까지 있어서 안심하고 사용했습니다. 카카오톡 인증 방법이 상세해서 외국인인 저도 5분 만에 끝냈어요. 168만원 환급금 받고 고향 부모님께 선물 보냈습니다. 정말 감사합니다!" 
+                    },
+                    { 
+                      name: "Kyaw", country: "Myanmar", flag: "🇲🇲", amount: "1,150,000", 
+                      text: "미얀마 친구들이 사기 아니냐고 걱정했는데 제가 먼저 받고 증명했습니다! 115만원 통장에 찍히는 순간 다들 놀랐죠. 인증이 막힌다면 AI 비서에게 물어보세요. 정말 친절하게 알려줍니다. 모두 꼭 해보세요!" 
+                    },
+                  ].map((review, idx) => (
+                    <Card key={idx} className="w-[550px] min-h-[350px] shrink-0 border-none shadow-[0_20px_45px_-10px_rgba(0,0,0,0.08)] rounded-[2.5rem] p-10 bg-white border border-slate-50 transition-all hover:scale-[1.03] active:scale-95 group flex flex-col justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-5 mb-8">
+                          <div className="h-16 w-16 rounded-[1.25rem] bg-slate-50 flex items-center justify-center text-4xl shadow-inner leading-none group-hover:bg-primary/5 transition-colors">
+                            {review.flag}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-black text-slate-900 text-xl tracking-tight">{review.name}</span>
+                              <Badge className="bg-primary/10 text-primary border-none font-bold text-[10px] h-5 px-2 uppercase tracking-wider">SECURE VERIFIED</Badge>
+                            </div>
+                            <p className="text-sm text-slate-400 font-bold uppercase tracking-widest">{review.country}</p>
+                          </div>
+                          <div className="ml-auto flex flex-col items-end">
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-primary font-black text-3xl tracking-tighter">+{review.amount}</span>
+                              <span className="text-slate-400 font-black text-sm">원</span>
+                            </div>
+                            <p className="text-[10px] text-green-500 font-black uppercase mt-1">NTS Deposited ✓</p>
+                          </div>
+                        </div>
+                        <div className="relative">
+                          <div className="absolute -top-4 -left-2 text-primary/10 text-6xl font-serif">"</div>
+                          <p className="text-slate-600 font-bold leading-relaxed text-lg lg:text-xl pl-4 relative z-10 break-words whitespace-normal">
+                            {t(review.text)}
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              ))}
+            </div>
+            {/* 측면 그래디언트 페이드 (고급스러움) */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-50/100 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-50/100 to-transparent z-10 pointer-events-none" />
+          </div>
+        </section>
+
         {/* 디자인 섹션 7: FAQ/AI Assistant */}
         <section className="py-40 bg-white">
           <div className="container mx-auto px-4 max-w-4xl space-y-24">
@@ -428,16 +632,16 @@ export default function HomePage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-10 relative z-10 px-0 pb-0">
+                <CardContent className="space-y-8 relative z-10 px-0 pb-0">
                   <form onSubmit={handleAsk} className="flex flex-col sm:flex-row gap-4">
                     <input 
-                      placeholder={t(`"외국인 중소기업 청년 소득세 감면"에 대해 무엇이든 물어보세요.`)} 
-                      className="h-16 text-lg rounded-2xl border-slate-200 focus:ring-primary shadow-inner bg-slate-50/50 flex-1 px-6 outline-none" 
+                      placeholder={t(`궁금한 점을 자유롭게 입력하세요.`)} 
+                      className="h-22 text-lg rounded-[1.5rem] border-slate-200 focus:ring-primary shadow-inner bg-slate-50/50 w-full sm:flex-1 px-8 outline-none transition-all focus:bg-white" 
                       value={question} 
                       onChange={(e) => setQuestion(e.target.value)} 
                     />
-                    <button type="submit" className="h-16 px-10 rounded-2xl bg-primary hover:bg-primary/90 text-white flex items-center justify-center shadow-xl shadow-primary/20 disabled:opacity-50 transition-all" disabled={loading}>
-                      {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Send className="h-6 w-6" />}
+                    <button type="submit" className="h-22 px-10 rounded-[1.5rem] bg-primary hover:bg-primary/90 text-white flex items-center justify-center shadow-xl shadow-primary/20 disabled:opacity-50 transition-all w-full sm:w-auto min-w-[140px]" disabled={loading}>
+                      {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <div className="flex items-center gap-2 font-black text-xl">{t('질문하기')} <Send className="h-6 w-6" /></div>}
                     </button>
                   </form>
                   {aiAnswer && (

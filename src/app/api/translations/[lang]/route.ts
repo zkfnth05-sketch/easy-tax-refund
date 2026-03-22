@@ -22,6 +22,7 @@ export async function GET(
       let moduleRaw;
       switch (lang) {
         case 'en': moduleRaw = await import('@/lib/translations/en'); break;
+        case 'ko': moduleRaw = await import('@/lib/translations/ko'); break;
         case 'vi': moduleRaw = await import('@/lib/translations/vi'); break;
         case 'zh': moduleRaw = await import('@/lib/translations/zh'); break;
         case 'km': moduleRaw = await import('@/lib/translations/km'); break;

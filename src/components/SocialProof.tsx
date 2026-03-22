@@ -20,6 +20,20 @@ export function SocialProof() {
   const { t } = useTranslation();
   const [notification, setNotification] = useState<Notification | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isForcedHidden, setIsForcedHidden] = useState(false);
+
+  useEffect(() => {
+    const handleHide = () => setIsForcedHidden(true);
+    const handleShow = () => setIsForcedHidden(false);
+
+    window.addEventListener("hide-social-proof", handleHide);
+    window.addEventListener("show-social-proof", handleShow);
+
+    return () => {
+      window.removeEventListener("hide-social-proof", handleHide);
+      window.removeEventListener("show-social-proof", handleShow);
+    };
+  }, []);
 
   const generateNotification = useCallback(() => {
     const country = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
@@ -65,13 +79,13 @@ export function SocialProof() {
     };
   }, [generateNotification]);
 
-  if (!notification) return null;
+  if (!notification || isForcedHidden) return null;
 
   return (
     <div
       className={cn(
-        "fixed bottom-6 left-6 z-[100] transition-all duration-700 transform print:hidden",
-        isVisible ? "translate-y-0 opacity-100 scale-100" : "translate-y-12 opacity-0 scale-95 pointer-events-none"
+        "fixed bottom-6 left-6 z-[120] transition-all duration-700 transform print:hidden",
+        isVisible && !isForcedHidden ? "translate-y-0 opacity-100 scale-100" : "translate-y-12 opacity-0 scale-95 pointer-events-none"
       )}
     >
       <div className="bg-white/90 backdrop-blur-md border border-slate-200 shadow-2xl rounded-[1.5rem] p-4 flex items-center gap-4 min-w-[300px] max-w-sm">

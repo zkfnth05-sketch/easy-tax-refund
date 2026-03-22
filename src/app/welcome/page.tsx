@@ -25,7 +25,7 @@ export default function WelcomePage() {
             <Globe className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-4xl lg:text-5xl font-black font-headline text-slate-900 tracking-tight">
-            {isReady ? t('welcome_title') : 'Welcome to Easy Tax Refund'}
+            {isReady ? t('언어 선택') : 'Language Selection'}
           </h1>
           <p className="text-xl text-slate-500 font-bold">
             {isReady ? t('welcome_desc') : 'Please select your language to start your refund check'}

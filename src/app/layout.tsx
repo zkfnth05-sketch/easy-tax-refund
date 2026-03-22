@@ -8,7 +8,20 @@ import { SocialProof } from '@/components/SocialProof';
 export const metadata: Metadata = {
   title: 'Easy Tax Refund | 간편한 외국인 세금 환급',
   description: '대한민국에 있는 외국인들이 정당한 권리를 찾을 수 있도록 돕는 AI 기반 세금 환급 서비스입니다.',
+  openGraph: {
+    title: 'Easy Tax Refund | 간편한 외국인 세금 환급',
+    description: '대한민국에 있는 외국인들이 정당한 권리를 찾을 수 있도록 돕는 AI 기반 세금 환급 서비스입니다.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Easy Tax Refund Logo',
+      },
+    ],
+  },
 };
+
 
 export default function RootLayout({
   children,
